@@ -1,0 +1,19 @@
+offline-task-api/
+├── src/
+│   ├── db/
+│   │   └── database.ts
+│   ├── models/
+│   │   └── Task.ts
+│   ├── services/
+│   │   ├── taskService.ts
+│   │   └── syncService.ts
+│   ├── routes/
+│   │   ├── tasks.ts
+│   │   └── sync.ts
+│   └── app.ts
+├── prisma/
+│   └── schema.prisma
+├── .env
+├── package.json
+├── tsconfig.json
+└── README.md

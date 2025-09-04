@@ -1,0 +1,11 @@
+import express from 'express';
+import { syncTasks } from '../services/syncService';
+
+const router = express.Router();
+
+router.post('/', async (req, res) => {
+  const syncResults = await syncTasks(req.body.tasks);
+  res.json(syncResults);
+});
+
+export default router;

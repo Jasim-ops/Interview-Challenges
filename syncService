@@ -1,0 +1,27 @@
+import prisma from '../db/database';
+
+export const syncTasks = async (clientTasks: any[]) => {
+  const result = [];
+  for (const task of clientTasks) {
+    try {
+      const existing = await prisma.task.findUnique({ where: { id: task.id } });
+      if (!existing) {
+        const newTask = await prisma.task.create({ data: task });
+        result.push({ id: task.id, status: 'synced', serverId: newTask.id });
+      } else {
+        if (new Date(task.updatedAt) > new Date(existing.updatedAt)) {
+          const updated = await prisma.task.update({
+            where: { id: task.id },
+            data: task,
+          });
+          result.push({ id: task.id, status: 'updated', serverId: updated.id });
+        } else {
+          result.push({ id: task.id, status: 'skipped', serverId: existing.id });
+        }
+      }
+    } catch (error) {
+      result.push({ id: task.id, status: 'error', error });
+    }
+  }
+  return result;
+};
